@@ -91,7 +91,6 @@ internal fun View.addListeners(
             if (onDetachInvoker != null) {
                 onDetachInvoker()
             }
-            // removeOnAttachStateChangeListener(this)
         }
 
     })
