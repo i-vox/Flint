@@ -17,3 +17,4 @@ dependencyResolutionManagement {
 rootProject.name = "Flint"
 include(":app")
 include(":flint-core")
+include(":flint-base")
