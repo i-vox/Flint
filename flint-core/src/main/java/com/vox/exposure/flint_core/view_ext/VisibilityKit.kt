@@ -19,15 +19,35 @@ package com.vox.exposure.flint_core.view_ext
 import android.graphics.Rect
 import android.view.View
 
-/**
- * flint’s built-in standard view visibility judgment strategy
- * Note that the occlusion of views at the same level is not considered.
- */
-internal fun View.normalVisibilityCheck(visiblePercent: Float): Boolean {
-    if (!baseVisibilityCheck(this)) {
+
+internal fun View.baseVisibilityCheck(): Boolean {
+    if (!isAttachedToWindow) {
         return false
     }
 
+    if (width <= 0 || height <= 0) {
+        return false
+    }
+
+    if (visibility != View.VISIBLE) {
+        return false
+    }
+
+    return isShown
+}
+
+internal fun View.visibilityCheckWithWindow(): Boolean {
+    if (!hasWindowFocus()) {
+        return false
+    }
+
+    return windowVisibility == View.VISIBLE
+}
+
+internal fun View.visibilityCheckWithAlpha(): Boolean = alpha <= 0f
+
+
+internal fun View.visibilityCheckWithRect(visiblePercent: Float): Boolean {
     val viewRect = Rect()
     val visible = getGlobalVisibleRect(viewRect)
 
@@ -40,37 +60,10 @@ internal fun View.normalVisibilityCheck(visiblePercent: Float): Boolean {
 
     val visibleArea = viewRect.height() * viewRect.width()
 
-    return if (visiblePercent == 0f) {
+    return if (visiblePercent <= 0f) {
         visibleArea > 0
     } else {
         (visibleArea >= area * visiblePercent)
     }
 }
 
-
-private fun baseVisibilityCheck(view: View): Boolean {
-    if (!view.isAttachedToWindow) {
-        return false
-    }
-
-    if (!view.hasWindowFocus()) {
-        return false
-    }
-
-    if (view.visibility != View.VISIBLE) {
-        return false
-    }
-
-    if (view.windowVisibility != View.VISIBLE) {
-        return false
-    }
-
-    if (!view.isShown) {
-        return false
-    }
-
-    if (view.width <= 0 || view.height <= 0 || view.alpha <= 0.0f) {
-        return false
-    }
-    return true
-}

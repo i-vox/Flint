@@ -1,2 +1,2 @@
 # Flint
-Android view exposure framework
+[In development] Android view exposure framework

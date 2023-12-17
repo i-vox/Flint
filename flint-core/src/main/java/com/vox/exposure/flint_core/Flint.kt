@@ -17,13 +17,15 @@
 package com.vox.exposure.flint_core
 
 import android.app.Application
+import android.view.View
+import com.vox.exposure.flint_core.checker.FlintView
 import com.vox.exposure.flint_core.detector.ActivityDetector
 import kotlinx.coroutines.CoroutineScope
 
 /**
  * flint's global configuration entry
  */
-class Flint {
+object Flint {
 
     /**
      * Initialize the dependencies required to access the Flint SDK
@@ -33,6 +35,10 @@ class Flint {
         scope: CoroutineScope
     ) {
         application.registerActivityLifecycleCallbacks(ActivityDetector)
+    }
+
+    fun View.flint(invoker: FlintView.() -> Unit) {
+        FlintView(this).apply(invoker)
     }
 
 }
