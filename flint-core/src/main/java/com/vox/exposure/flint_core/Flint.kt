@@ -19,6 +19,7 @@ package com.vox.exposure.flint_core
 import android.app.Application
 import android.view.View
 import com.vox.exposure.flint_core.checker.FlintView
+import com.vox.exposure.flint_core.checker.FlintViewAbility
 import com.vox.exposure.flint_core.detector.ActivityDetector
 import kotlinx.coroutines.CoroutineScope
 
@@ -32,13 +33,18 @@ object Flint {
      */
     fun init(
         application: Application,
-        scope: CoroutineScope
+        scope: CoroutineScope?
     ) {
         application.registerActivityLifecycleCallbacks(ActivityDetector)
+
+        if (scope != null) {
+            GlobalContext.scope = scope
+        }
     }
 
-    fun View.flint(invoker: FlintView.() -> Unit) {
-        FlintView(this).apply(invoker)
+    fun View.flint(invoker: FlintView.() -> Unit): FlintViewAbility {
+        val flintView = FlintView(this).apply(invoker)
+        return FlintViewAbility(flintView)
     }
 
 }
