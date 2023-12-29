@@ -1,10 +1,10 @@
 package com.vox.exposure.flint_core.checker
 
 import android.view.View
-import com.vox.exposure.flint_core.GlobalContext
 import com.vox.exposure.flint_core.Element
+import com.vox.exposure.flint_core.GlobalContext
 import com.vox.exposure.flint_core.Key
-import com.vox.exposure.flint_core.event.onCreateFlintView
+import com.vox.exposure.flint_core.structurer.FlintViewAPIImpl
 import kotlinx.coroutines.launch
 
 class FlintViewAbility(internal val view: FlintView)
@@ -16,7 +16,7 @@ fun FlintViewAbility.subscribeVisibility(invoker: View.() -> Unit): FlintViewAbi
 
 fun FlintViewAbility.run(): Job {
     val job = Job()
-    onCreateFlintView(view.apply { context.put(job) })
+    FlintViewAPIImpl.onCreateFlintView(view.apply { context.put(job) })
     return job
 }
 

@@ -16,7 +16,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         findViewById<ViewGroup>(R.id.view_content).flint {
             visibleAreaRatio = 0.7f
-            visibilityRules = +Rule.CUSTOM {
+            visibilityRules = visibilityRules +Rule.CUSTOM {
                 isShown && flag
             }
         }.subscribeVisibility {
