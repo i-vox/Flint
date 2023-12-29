@@ -34,43 +34,57 @@ internal fun View.addListeners(
     onDetachInvoker: (() -> Unit)? = null
 ) {
 
-
-    val layoutListener = ViewTreeObserver.OnGlobalLayoutListener {
-        if (globalLayoutInvoker != null) {
+    val layoutListener = if (globalLayoutInvoker != null) {
+        ViewTreeObserver.OnGlobalLayoutListener {
             globalLayoutInvoker()
         }
+    } else {
+        null
     }
 
-
-    val scrollListener: ViewTreeObserver.OnScrollChangedListener =
+    val scrollListener = if (scrollChangedInvoker != null) {
         ViewTreeObserver.OnScrollChangedListener {
-            if (scrollChangedInvoker != null) {
-                scrollChangedInvoker()
-            }
+            scrollChangedInvoker()
         }
+    } else {
+        null
+    }
 
-
-    val focusChangeListener = ViewTreeObserver.OnWindowFocusChangeListener { hasFocus ->
-        if (windowFocusChangeInvoker != null) {
+    val focusChangeListener = if (windowFocusChangeInvoker != null) {
+        ViewTreeObserver.OnWindowFocusChangeListener { hasFocus ->
             windowFocusChangeInvoker(hasFocus)
         }
+    } else {
+        null
     }
 
-
-    val onDrawListener = ViewTreeObserver.OnDrawListener {
-        if (onDrawInvoker != null) {
+    val onDrawListener = if (onDrawInvoker != null) {
+        ViewTreeObserver.OnDrawListener {
             onDrawInvoker()
         }
+    } else {
+        null
     }
 
     addOnAttachStateChangeListener(object : View.OnAttachStateChangeListener {
         override fun onViewAttachedToWindow(v: View) {
             v.post {
                 v.viewTreeObserver.apply {
-                    addOnGlobalLayoutListener(layoutListener)
-                    addOnScrollChangedListener(scrollListener)
-                    addOnWindowFocusChangeListener(focusChangeListener)
-                    addOnDrawListener(onDrawListener)
+                    if (layoutListener != null) {
+                        addOnGlobalLayoutListener(layoutListener)
+                    }
+
+                    if (scrollListener != null) {
+                        addOnScrollChangedListener(scrollListener)
+                    }
+
+                    if (focusChangeListener != null) {
+                        addOnWindowFocusChangeListener(focusChangeListener)
+                    }
+
+                    if (onDrawListener != null) {
+                        addOnDrawListener(onDrawListener)
+                    }
                 }
             }
             if (onAttachInvoker != null) {
@@ -81,10 +95,21 @@ internal fun View.addListeners(
         override fun onViewDetachedFromWindow(v: View) {
             v.post {
                 v.viewTreeObserver.apply {
-                    removeOnGlobalLayoutListener(layoutListener)
-                    removeOnWindowFocusChangeListener(focusChangeListener)
-                    removeOnScrollChangedListener(scrollListener)
-                    removeOnDrawListener(onDrawListener)
+                    if (layoutListener != null) {
+                        removeOnGlobalLayoutListener(layoutListener)
+                    }
+
+                    if (focusChangeListener != null) {
+                        removeOnWindowFocusChangeListener(focusChangeListener)
+                    }
+
+                    if (scrollListener != null) {
+                        removeOnScrollChangedListener(scrollListener)
+                    }
+
+                    if (onDrawListener != null) {
+                        removeOnDrawListener(onDrawListener)
+                    }
                 }
             }
 
