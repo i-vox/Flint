@@ -17,8 +17,8 @@ sealed class Rule {
 
 operator fun Rule.plus(other: Rule) = setOf(this, other)
 operator fun Rule.unaryPlus() = setOf(this)
-operator fun Set<Rule>.plus(other: Rule): Set<Rule> = this + other
-operator fun Set<Rule>.minus(other: Rule): Set<Rule> = this - other
+operator fun Set<Rule>.plus(other: Rule): Set<Rule> = this + setOf(other)
+operator fun Set<Rule>.minus(other: Rule): Set<Rule> = this - setOf(other)
 
 
 internal fun View.isVisible(rules: Set<Rule>): Boolean {

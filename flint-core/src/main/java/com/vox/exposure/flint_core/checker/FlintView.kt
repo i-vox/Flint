@@ -5,15 +5,18 @@ import com.vox.exposure.flint_core.GlobalContext.def_visibleAreaRatio
 import com.vox.exposure.flint_core.ContextImpl
 import com.vox.exposure.flint_core.FlintContext
 
-open class FlintView(val view: View) {
+class FlintView(val view: View) {
 
     var visibleAreaRatio = def_visibleAreaRatio
 
     var visibilityRules = Rule.BASE + Rule.ALPHA + Rule.WINDOW + Rule.RECT(visibleAreaRatio)
 
+    var iD = { view.hashCode().toString() }
+
     internal var context: FlintContext = ContextImpl()
 
-    var iD = { view.hashCode().toString() }
+    internal var rootTag = 0
+
 
     override fun hashCode(): Int {
         return super.hashCode()
