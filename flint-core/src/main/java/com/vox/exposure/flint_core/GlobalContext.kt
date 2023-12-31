@@ -1,5 +1,6 @@
 package com.vox.exposure.flint_core
 
+import com.vox.exposure.flint_core.structure.CollectionType
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -13,4 +14,7 @@ internal object GlobalContext : ContextImpl() {
         SupervisorJob()
                 + Dispatchers.Default
     )
+
+    var collectionType = CollectionType.Linear
+
 }

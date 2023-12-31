@@ -7,7 +7,6 @@ import com.vox.exposure.flint_core.Flint.flint
 import com.vox.exposure.flint_core.checker.Rule
 import com.vox.exposure.flint_core.checker.run
 import com.vox.exposure.flint_core.checker.subscribeVisibility
-import com.vox.exposure.flint_core.checker.unaryPlus
 
 class MainActivity : AppCompatActivity() {
     private var flag = false

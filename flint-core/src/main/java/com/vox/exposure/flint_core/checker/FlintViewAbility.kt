@@ -1,11 +1,14 @@
 package com.vox.exposure.flint_core.checker
 
+import android.os.Looper
 import android.view.View
 import com.vox.exposure.flint_core.Element
 import com.vox.exposure.flint_core.GlobalContext
 import com.vox.exposure.flint_core.Key
-import com.vox.exposure.flint_core.structurer.FlintViewAPIImpl
+import com.vox.exposure.flint_core.structure.StructureManager
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class FlintViewAbility(internal val view: FlintView)
 
@@ -16,7 +19,13 @@ fun FlintViewAbility.subscribeVisibility(invoker: View.() -> Unit): FlintViewAbi
 
 fun FlintViewAbility.run(): Job {
     val job = Job()
-    FlintViewAPIImpl.onCreateFlintView(view.apply { context.put(job) })
+    if (Looper.getMainLooper() == Looper.myLooper()) {
+        StructureManager.onCreateFlintView(view.apply { context.put(job) })
+    } else {
+        GlobalContext.scope.launch(Dispatchers.Main) {
+            StructureManager.onCreateFlintView(view.apply { context.put(job) })
+        }
+    }
     return job
 }
 
@@ -38,7 +47,9 @@ class Job : Element {
 
     fun cancel() {
         GlobalContext.scope.launch {
-            state = JobState.Canceled
+            withContext(Dispatchers.Main) {
+                state = JobState.Canceled
+            }
         }
     }
 
