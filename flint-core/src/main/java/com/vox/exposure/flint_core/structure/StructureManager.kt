@@ -43,6 +43,7 @@ internal object StructureManager : FlintViewInterface {
     private fun onAttach(flintView: FlintView) {
         val rootTag = rootViewConfig(flintView)
         viewStructure.addElement(rootTag, flintView)
+        Detector.triggerDetect(rootTag)
     }
 
     private fun rootViewConfig(flintView: FlintView): Int {
@@ -51,16 +52,16 @@ internal object StructureManager : FlintViewInterface {
                 setTag(R.id.flint_root_view_tag, hashCode())
                 addListeners(
                     globalLayoutInvoker = {
-                        Detector.triggerDetect(hashCode())
+                        Detector.triggerDetect(this.hashCode())
                     },
                     scrollChangedInvoker = {
-                        Detector.triggerDetect(hashCode())
+                        Detector.triggerDetect(this.hashCode())
                     },
                     windowFocusChangeInvoker = {
-                        Detector.triggerDetect(hashCode())
+                        Detector.triggerDetect(this.hashCode())
                     },
                     onDrawInvoker = {
-                        Detector.triggerDetect(hashCode())
+                        Detector.triggerDetect(this.hashCode())
                     },
                     onAttachInvoker = {
 

@@ -20,15 +20,13 @@ open class ContextImpl(protected val elements: MutableMap<Key<*>, Element> = mut
     }
 
     override fun <E : Element> put(element: E): FlintContext {
-        val newElements = elements.toMutableMap()
-        newElements[element.key] = element
-        return ContextImpl(newElements)
+        elements[element.key] = element
+        return this
     }
 
     override fun <E : Element> remove(key: Key<E>): FlintContext {
-        val newElements = elements.toMutableMap()
-        newElements.remove(key)
-        return ContextImpl(newElements)
+        elements.remove(key)
+        return this
     }
 
     override fun getAllElements(): Map<Key<*>, Element> {

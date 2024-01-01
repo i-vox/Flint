@@ -35,13 +35,15 @@ internal class VisibilityChecker {
     }
 
     fun toInVisible(flintView: FlintView) {
+        flintView.isVisible = false
         flintView.context[VisibilityListener.ListenerKey]?.onVisibilityChanged(
             flintView.view,
-            VisibilityType.InVisible
+            VisibilityType.Invisible
         )
     }
 
     fun toVisible(flintView: FlintView) {
+        flintView.isVisible = true
         flintView.context[VisibilityListener.ListenerKey]?.onVisibilityChanged(
             flintView.view,
             VisibilityType.Visible
