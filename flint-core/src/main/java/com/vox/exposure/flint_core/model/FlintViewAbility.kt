@@ -14,7 +14,7 @@ import kotlinx.coroutines.withContext
 
 class FlintViewAbility(internal val view: FlintView)
 
-fun FlintViewAbility.subscribeVisibility(invoker: View.(visibilityType: VisibilityType) -> Unit): FlintViewAbility {
+fun FlintViewAbility.subscribeVisibilityChange(invoker: View.(visibilityType: VisibilityType) -> Unit): FlintViewAbility {
     view.context.put(VisibilityListener(invoker))
     return this
 }

@@ -44,7 +44,7 @@ internal fun View.visibilityCheckWithWindow(): Boolean {
     return windowVisibility == View.VISIBLE
 }
 
-internal fun View.visibilityCheckWithAlpha(): Boolean = alpha <= 0f
+internal fun View.visibilityCheckWithAlpha(): Boolean = alpha > 0f
 
 
 internal fun View.visibilityCheckWithRect(visiblePercent: Float): Boolean {

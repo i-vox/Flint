@@ -7,5 +7,5 @@ interface VisibilityChangeListener {
 }
 
 enum class VisibilityType {
-    Visible, InVisible
+    Visible, Invisible
 }
