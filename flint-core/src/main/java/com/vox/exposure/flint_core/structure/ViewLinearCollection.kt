@@ -1,6 +1,6 @@
 package com.vox.exposure.flint_core.structure
 
-class LinearCollectionOperator<T> : CollectionOperator<T> {
+internal class ViewLinearCollection<T> : CollectionOperator<T> {
     private val elements = mutableSetOf<T>()
 
     override fun addElement(element: T) {
