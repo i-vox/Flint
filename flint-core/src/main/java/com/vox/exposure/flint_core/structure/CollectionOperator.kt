@@ -1,6 +1,6 @@
 package com.vox.exposure.flint_core.structure
 
-interface CollectionOperator<T> {
+internal interface CollectionOperator<T> {
     fun addElement(element: T)
     fun removeElement(element: T)
     fun removeAllElements()

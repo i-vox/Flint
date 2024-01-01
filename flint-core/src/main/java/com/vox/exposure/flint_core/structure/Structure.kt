@@ -8,36 +8,21 @@ internal class Structure<T> {
     fun addElement(rootTag: Int, element: T) {
         val operator = operators.getOrPut(rootTag) {
             if (GlobalContext.collectionType == CollectionType.Linear)
-                LinearCollectionOperator()
-            else TreeCollectionOperator()
+                ViewLinearCollection()
+            else ViewTreeCollection()
         }
         operator.addElement(element)
     }
 
     fun removeElement(rootTag: Int, element: T) {
-        val operator = operators[rootTag]
-            ?: throw IllegalArgumentException(
-                "The collection whose rootTag is $rootTag " +
-                        "cannot be found when remove"
-            )
-        operator.removeElement(element)
+        operators[rootTag]?.removeElement(element)
     }
 
     fun removeAllElements(rootTag: Int) {
-        val operator = operators[rootTag]
-            ?: throw IllegalArgumentException(
-                "The collection whose rootTag is $rootTag " +
-                        "cannot be found when removeAllElements"
-            )
-        operator.removeAllElements()
+        operators[rootTag]?.removeAllElements()
     }
 
-    fun getElements(rootTag: Int): Collection<T> {
-        val operator = operators[rootTag]
-            ?: throw IllegalArgumentException(
-                "The collection whose rootTag is $rootTag " +
-                        "cannot be found when getElements"
-            )
-        return operator.getElements()
+    fun getElements(rootTag: Int): Collection<T>? {
+        return operators[rootTag]?.getElements()
     }
 }

@@ -1,8 +1,8 @@
 package com.vox.exposure.flint_core.structure
 
-class TreeCollectionOperator<T> : CollectionOperator<T> {
+internal class ViewTreeCollection<T> : CollectionOperator<T> {
 
-    //todo Provide complete implementation
+    // todo Provide complete implementation
 
     private val elements = sortedSetOf<T>()
 

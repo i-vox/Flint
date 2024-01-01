@@ -31,7 +31,8 @@ internal fun View.addListeners(
     windowFocusChangeInvoker: ((hasFocus: Boolean) -> Unit)? = null,
     onDrawInvoker: (() -> Unit)? = null,
     onAttachInvoker: (() -> Unit)? = null,
-    onDetachInvoker: (() -> Unit)? = null
+    onDetachInvoker: (() -> Unit)? = null,
+    isRootView: Boolean = false
 ) {
 
     val layoutListener = if (globalLayoutInvoker != null) {
@@ -66,24 +67,49 @@ internal fun View.addListeners(
         null
     }
 
+
+    if (isRootView) {
+        post {
+            viewTreeObserver.apply {
+                if (layoutListener != null) {
+                    addOnGlobalLayoutListener(layoutListener)
+                }
+
+                if (scrollListener != null) {
+                    addOnScrollChangedListener(scrollListener)
+                }
+
+                if (focusChangeListener != null) {
+                    addOnWindowFocusChangeListener(focusChangeListener)
+                }
+
+                if (onDrawListener != null) {
+                    addOnDrawListener(onDrawListener)
+                }
+            }
+        }
+    }
+
     addOnAttachStateChangeListener(object : View.OnAttachStateChangeListener {
         override fun onViewAttachedToWindow(v: View) {
-            v.post {
-                v.viewTreeObserver.apply {
-                    if (layoutListener != null) {
-                        addOnGlobalLayoutListener(layoutListener)
-                    }
+            if (!isRootView) {
+                v.post {
+                    v.viewTreeObserver.apply {
+                        if (layoutListener != null) {
+                            addOnGlobalLayoutListener(layoutListener)
+                        }
 
-                    if (scrollListener != null) {
-                        addOnScrollChangedListener(scrollListener)
-                    }
+                        if (scrollListener != null) {
+                            addOnScrollChangedListener(scrollListener)
+                        }
 
-                    if (focusChangeListener != null) {
-                        addOnWindowFocusChangeListener(focusChangeListener)
-                    }
+                        if (focusChangeListener != null) {
+                            addOnWindowFocusChangeListener(focusChangeListener)
+                        }
 
-                    if (onDrawListener != null) {
-                        addOnDrawListener(onDrawListener)
+                        if (onDrawListener != null) {
+                            addOnDrawListener(onDrawListener)
+                        }
                     }
                 }
             }
@@ -93,30 +119,30 @@ internal fun View.addListeners(
         }
 
         override fun onViewDetachedFromWindow(v: View) {
-            v.post {
-                v.viewTreeObserver.apply {
-                    if (layoutListener != null) {
-                        removeOnGlobalLayoutListener(layoutListener)
-                    }
+            if (!isRootView) {
+                v.post {
+                    v.viewTreeObserver.apply {
+                        if (layoutListener != null) {
+                            removeOnGlobalLayoutListener(layoutListener)
+                        }
 
-                    if (focusChangeListener != null) {
-                        removeOnWindowFocusChangeListener(focusChangeListener)
-                    }
+                        if (focusChangeListener != null) {
+                            removeOnWindowFocusChangeListener(focusChangeListener)
+                        }
 
-                    if (scrollListener != null) {
-                        removeOnScrollChangedListener(scrollListener)
-                    }
+                        if (scrollListener != null) {
+                            removeOnScrollChangedListener(scrollListener)
+                        }
 
-                    if (onDrawListener != null) {
-                        removeOnDrawListener(onDrawListener)
+                        if (onDrawListener != null) {
+                            removeOnDrawListener(onDrawListener)
+                        }
                     }
                 }
             }
-
             if (onDetachInvoker != null) {
                 onDetachInvoker()
             }
         }
-
     })
 }

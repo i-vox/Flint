@@ -1,10 +1,12 @@
-package com.vox.exposure.flint_core.checker
+package com.vox.exposure.flint_core.model
 
 import android.os.Looper
 import android.view.View
 import com.vox.exposure.flint_core.Element
 import com.vox.exposure.flint_core.GlobalContext
 import com.vox.exposure.flint_core.Key
+import com.vox.exposure.flint_core.check.VisibilityChangeListener
+import com.vox.exposure.flint_core.check.VisibilityType
 import com.vox.exposure.flint_core.structure.StructureManager
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -12,7 +14,7 @@ import kotlinx.coroutines.withContext
 
 class FlintViewAbility(internal val view: FlintView)
 
-fun FlintViewAbility.subscribeVisibility(invoker: View.() -> Unit): FlintViewAbility {
+fun FlintViewAbility.subscribeVisibility(invoker: View.(visibilityType: VisibilityType) -> Unit): FlintViewAbility {
     view.context.put(VisibilityListener(invoker))
     return this
 }
@@ -29,10 +31,16 @@ fun FlintViewAbility.run(): Job {
     return job
 }
 
-class VisibilityListener(val invoker: View.() -> Unit) : Element {
+internal class VisibilityListener(val invoker: View.(visibilityType: VisibilityType) -> Unit) :
+    Element,
+    VisibilityChangeListener {
     override val key: Key<VisibilityListener> = ListenerKey
 
     object ListenerKey : Key<VisibilityListener>
+
+    override fun onVisibilityChanged(view: View, visibilityType: VisibilityType) {
+        invoker(view, visibilityType)
+    }
 }
 
 
